@@ -86,16 +86,73 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(String result){
-            TextView answer = (TextView)findViewById(R.id.answer);
             Token token;
             token = new Gson().fromJson(result, Token.class);
             t = token.getToken();
             new GetInfo().execute(t);
-            //answer.setText(result + " " + t);
         }
 
         public String getToken(){
             return t;
+        }
+    }
+
+    public class PostToken extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String ...params)
+        {
+
+            int i = -1;
+            String[] parameters = new String[7];
+            for (String p : params)
+                parameters[++i] = p;
+
+            HttpPost httppost = new HttpPost(url_base + "token");
+
+            List<NameValuePair> paramPair = new ArrayList<NameValuePair>();
+            paramPair.add(new BasicNameValuePair("token", parameters[0]));
+            paramPair.add(new BasicNameValuePair("scolaryear", parameters[1]));
+            paramPair.add(new BasicNameValuePair("codemodule", parameters[2]));
+            paramPair.add(new BasicNameValuePair("codeinstance", parameters[3]));
+            paramPair.add(new BasicNameValuePair("codeacti", parameters[4]));
+            paramPair.add(new BasicNameValuePair("codeevent", parameters[5]));
+            paramPair.add(new BasicNameValuePair("tokenvalidationcode", parameters[6]));
+
+
+            try {
+                httppost.setEntity(new UrlEncodedFormEntity(paramPair));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            try {
+                httpclient.execute(httppost);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            HttpResponse response= null;
+            try {
+                response = httpclient.execute(httppost);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String s = null;
+            try {
+                s = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
         }
     }
 
@@ -150,12 +207,11 @@ public class MainActivity extends Activity {
                 answer.setText("Pas netsoul biatch");
             else
                  answer.setText(t);
-
-//                answer.setText(result);
         }
     }
 
-    public class GetHttp extends AsyncTask<String, Void, String> {
+    public class GetPlan extends AsyncTask<String, Void, String> {
+
         @Override
         protected String doInBackground(String ...params)
         {
@@ -164,8 +220,49 @@ public class MainActivity extends Activity {
             for (String p : params)
                 parameters[++i] = p;
 
-            HttpGet httpget = new HttpGet(parameters[0]);
-            return "yolo";
+            HttpGet httpget = new HttpGet(url_base + "planning?token=" + params[0] +
+                                            "&start=" + params[1] + "&end=" + params[2]);
+
+            try {
+                httpclient.execute(httpget);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            HttpResponse response= null;
+            try {
+                response = httpclient.execute(httpget);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String str = "";
+            String s = "";
+            try {
+                while ((str = reader.readLine()) != null) {
+                    s += str;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            TextView answer = (TextView)findViewById(R.id.answer);
+            Informations informations = null;
+            String t = null;
+            informations = new Gson().fromJson(result, Informations.class);
+            t = informations.getIp();
+            if (t == null)
+                answer.setText("Pas netsoul biatch");
+            else
+                answer.setText(t);
         }
     }
 
@@ -199,6 +296,7 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
     public View.OnClickListener epiLog = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
