@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String result){
             TextView answer = (TextView)findViewById(R.id.answer);
-  /*          Informations informations = null;
+            Informations informations = null;
             String t = null;
                 informations = new Gson().fromJson(result, Informations.class);
             t = informations.getIp();
@@ -150,8 +150,8 @@ public class MainActivity extends Activity {
                 answer.setText("Pas netsoul biatch");
             else
                  answer.setText(t);
-            */
-                answer.setText(result);
+
+//                answer.setText(result);
         }
     }
 

@@ -10,7 +10,7 @@ public class Infos {
     private String email;
     private String lastname;
     private String firstname;
-    private Userinfo userinfo;
+    private String userinfo;
     private boolean referent_used;
     private String picture;
     private String picture_fun;
@@ -41,6 +41,7 @@ public class Infos {
     private boolean invited;
     private Number studentyear;
     private boolean admin;
+    private Number decoded;
 
     public String getId(){
         return this.id;
@@ -252,10 +253,10 @@ public class Infos {
     public void setAdmin(boolean admin){
         this.admin = admin;
     }
-    public Userinfo getUserinfo(){
+    public String getUserinfo(){
         return this.userinfo;
     }
-    public void setUserinfo(Userinfo userinfo){
+    public void setUserinfo(String userinfo){
         this.userinfo = userinfo;
     }
     public Rights getRights(){
