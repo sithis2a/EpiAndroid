@@ -90,6 +90,7 @@ public class MainActivity extends Activity {
             token = new Gson().fromJson(result, Token.class);
             t = token.getToken();
             new GetInfo().execute(t);
+            new GetPlan().execute(t, "2015-01-01", "2015-03-31");
         }
 
         public String getToken(){
@@ -255,14 +256,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String result){
             TextView answer = (TextView)findViewById(R.id.answer);
-            Informations informations = null;
-            String t = null;
-            informations = new Gson().fromJson(result, Informations.class);
-            t = informations.getIp();
-            if (t == null)
-                answer.setText("Pas netsoul biatch");
-            else
-                answer.setText(t);
+            answer.setText(result);
         }
     }
 
