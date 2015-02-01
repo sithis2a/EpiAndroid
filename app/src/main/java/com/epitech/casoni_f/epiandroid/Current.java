@@ -4,22 +4,22 @@ package com.epitech.casoni_f.epiandroid;
  * Created by matthieu on 01/02/2015.
  */
 public class Current {
-    private Number achieved;
+    private int achieved;
     private Number active_log;
     private Number credits_min;
     private Number credits_norm;
     private Number credits_obj;
-    private Number failed;
-    private Number inprogress;
+    private int failed;
+    private int inprogress;
     private Number nslog_min;
     private Number nslog_norm;
     private Number semester_code;
     private Number semester_num;
 
-    public Number getAchieved(){
+    public int getAchieved(){
         return this.achieved;
     }
-    public void setAchieved(Number achieved){
+    public void setAchieved(int achieved){
         this.achieved = achieved;
     }
     public Number getActive_log(){
@@ -46,16 +46,16 @@ public class Current {
     public void setCredits_obj(Number credits_obj){
         this.credits_obj = credits_obj;
     }
-    public Number getFailed(){
+    public int getFailed(){
         return this.failed;
     }
-    public void setFailed(Number failed){
+    public void setFailed(int failed){
         this.failed = failed;
     }
-    public Number getInprogress(){
+    public int getInprogress(){
         return this.inprogress;
     }
-    public void setInprogress(Number inprogress){
+    public void setInprogress(int inprogress){
         this.inprogress = inprogress;
     }
     public Number getNslog_min(){

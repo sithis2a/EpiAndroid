@@ -27,7 +27,7 @@ public class Informations {
     public void setBoard(Board board){
         this.board = board;
     }
-    /*public Current getCurrent(){
+   /* public Current getCurrent(){
         return this.current;
     }
     public void setCurrent(Current current){
