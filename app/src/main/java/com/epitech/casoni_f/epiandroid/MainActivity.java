@@ -5,10 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
             List<NameValuePair> paramPair = new ArrayList<NameValuePair>();
             paramPair.add(new BasicNameValuePair("login", parameters[1]));
             paramPair.add(new BasicNameValuePair("password", parameters[2]));
+
 
             try {
                 httppost.setEntity(new UrlEncodedFormEntity(paramPair));
@@ -76,13 +77,18 @@ public class MainActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
+
             return s;
         }
 
         @Override
         protected void onPostExecute(String result){
             TextView answer = (TextView)findViewById(R.id.answer);
-            answer.setText(result);
+            Token token;
+            token = new Gson().fromJson(result, Token.class);
+            answer.setText(token.getToken());
         }
     }
 
