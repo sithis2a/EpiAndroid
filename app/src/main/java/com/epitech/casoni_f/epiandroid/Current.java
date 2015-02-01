@@ -11,10 +11,10 @@ public class Current {
     private Number credits_obj;
     private Number failed;
     private Number inprogress;
-    private String nslog_min;
-    private String nslog_norm;
-    private String semester_code;
-    private String semester_num;
+    private Number nslog_min;
+    private Number nslog_norm;
+    private Number semester_code;
+    private Number semester_num;
 
     public Number getAchieved(){
         return this.achieved;
@@ -58,28 +58,28 @@ public class Current {
     public void setInprogress(Number inprogress){
         this.inprogress = inprogress;
     }
-    public String getNslog_min(){
+    public Number getNslog_min(){
         return this.nslog_min;
     }
-    public void setNslog_min(String nslog_min){
+    public void setNslog_min(Number nslog_min){
         this.nslog_min = nslog_min;
     }
-    public String getNslog_norm(){
+    public Number getNslog_norm(){
         return this.nslog_norm;
     }
-    public void setNslog_norm(String nslog_norm){
+    public void setNslog_norm(Number nslog_norm){
         this.nslog_norm = nslog_norm;
     }
-    public String getSemester_code(){
+    public Number getSemester_code(){
         return this.semester_code;
     }
-    public void setSemester_code(String semester_code){
+    public void setSemester_code(Number semester_code){
         this.semester_code = semester_code;
     }
-    public String getSemester_num(){
+    public Number getSemester_num(){
         return this.semester_num;
     }
-    public void setSemester_num(String semester_num){
+    public void setSemester_num(Number semester_num){
         this.semester_num = semester_num;
     }
 }
