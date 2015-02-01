@@ -15,6 +15,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -28,24 +29,28 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    public class PostHttp extends AsyncTask<String, Void, String> {
+    HttpClient httpclient;
+
+    protected String url_base = "http://epitech-api.herokuapp.com/";
+
+    public class PostLogin extends AsyncTask<String, Void, String> {
+
+        public String t;
 
         @Override
         protected String doInBackground(String ...params)
         {
 
             int i = -1;
-            String[] parameters = new String[3];
+            String[] parameters = new String[2];
             for (String p : params)
-            {
                 parameters[++i] = p;
-            }
 
-            HttpPost httppost = new HttpPost(parameters[0]);
+            HttpPost httppost = new HttpPost(url_base + "login");
 
             List<NameValuePair> paramPair = new ArrayList<NameValuePair>();
-            paramPair.add(new BasicNameValuePair("login", parameters[1]));
-            paramPair.add(new BasicNameValuePair("password", parameters[2]));
+            paramPair.add(new BasicNameValuePair("login", parameters[0]));
+            paramPair.add(new BasicNameValuePair("password", parameters[1]));
 
 
             try {
@@ -53,7 +58,6 @@ public class MainActivity extends Activity {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            HttpClient httpclient = new DefaultHttpClient();
             try {
                 httpclient.execute(httppost);
             } catch (IOException e) {
@@ -77,9 +81,6 @@ public class MainActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
-
             return s;
         }
 
@@ -88,7 +89,74 @@ public class MainActivity extends Activity {
             TextView answer = (TextView)findViewById(R.id.answer);
             Token token;
             token = new Gson().fromJson(result, Token.class);
-            answer.setText(token.getToken());
+            t = token.getToken();
+            new GetInfo().execute(t);
+            //answer.setText(result + " " + t);
+        }
+
+        public String getToken(){
+            return t;
+        }
+    }
+
+    public class GetInfo extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String ...params)
+        {
+
+            int i = -1;
+            String parameters = params[0];
+
+            HttpGet httpget = new HttpGet(url_base + "infos?token=" + params[0]);
+
+            try {
+                httpclient.execute(httpget);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            HttpResponse response= null;
+            try {
+                response = httpclient.execute(httpget);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String str = "";
+            String s = null;
+            try {
+                while ((str = reader.readLine()) != null) {
+                    s += str;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            TextView answer = (TextView)findViewById(R.id.answer);
+            answer.setText(result);
+        }
+    }
+
+    public class GetHttp extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String ...params)
+        {
+            int i = -1;
+            String[] parameters = new String[3];
+            for (String p : params)
+                parameters[++i] = p;
+
+            HttpGet httpget = new HttpGet(parameters[0]);
+            return "yolo";
         }
     }
 
@@ -98,6 +166,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Button b = (Button)findViewById(R.id.button);
         b.setOnClickListener(epiLog);
+        httpclient = new DefaultHttpClient();
     }
 
     @Override
@@ -126,7 +195,9 @@ public class MainActivity extends Activity {
         public void onClick(View v) {
             TextView login = (TextView)findViewById(R.id.login);
             TextView pass = (TextView)findViewById(R.id.password);
-            new PostHttp().execute("http://epitech-api.herokuapp.com/login", login.getText().toString(), pass.getText().toString());
+            PostLogin log = new PostLogin();
+            log.execute(login.getText().toString(), pass.getText().toString());
+            //new GetInfo().execute(log.getToken());
         }
     };
 
