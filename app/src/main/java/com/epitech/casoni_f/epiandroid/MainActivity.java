@@ -128,7 +128,7 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
             String str = "";
-            String s = null;
+            String s = "";
             try {
                 while ((str = reader.readLine()) != null) {
                     s += str;
@@ -142,7 +142,16 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String result){
             TextView answer = (TextView)findViewById(R.id.answer);
-            answer.setText(result);
+  /*          Informations informations = null;
+            String t = null;
+                informations = new Gson().fromJson(result, Informations.class);
+            t = informations.getIp();
+            if (t == null)
+                answer.setText("Pas netsoul biatch");
+            else
+                 answer.setText(t);
+            */
+                answer.setText(result);
         }
     }
 

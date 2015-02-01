@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by matthieu on 01/02/2015.
  */
-public class board {
+public class Board {
     private List activites;
     private List modules;
     private List notes;
